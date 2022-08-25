@@ -38,16 +38,20 @@ async function updateById(id, item) {
     await existing.save();
     return existing;
   } else {
-    const error = new Error('Not Found');
+    const error = new Error("Not Found");
     error._notFound = true;
     throw error;
   }
 }
 
-module.exports = {
-    getAll,
-    create,
-    getById,
-    updateById,
-
+async function deleteById(id) {
+  return await Item.findByIdAndDelete(id);
 }
+
+module.exports = {
+  getAll,
+  create,
+  getById,
+  updateById,
+  deleteById,
+};
