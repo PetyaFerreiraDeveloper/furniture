@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 
 const cors = require('./src/middlewares/cors');
-const furnitureController = require('./src/controllers/furniture');
+const furnitureController = require('./src/controllers/furnitureController');
 
 async function start() {
     try {
