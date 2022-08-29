@@ -6,7 +6,11 @@ const api = require("../services/furnitureService");
 const errorMapper = require("../util/errorMapper");
 
 router.get("/", async (req, res) => {
-  res.json(await api.getAll());
+  try {
+    res.json(await api.getAll(req.query.where));
+  } catch (err) {
+    res.status(400).json({ message: "Bad request" });
+  }
 });
 
 router.post("/", isAuth(), async (req, res) => {
