@@ -13,6 +13,8 @@ async function create(item) {
     price: item.price,
     img: item.img,
     material: item.material,
+    _ownerId: item._ownerId
+
   });
 
   await result.save();
