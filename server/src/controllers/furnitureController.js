@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+const { isAuth, isOwner } = require("../middlewares/guards");
+const preload = require("../middlewares/preload");
 const api = require("../services/furnitureService");
 const errorMapper = require('../util/errorMapper');
 
@@ -7,7 +9,7 @@ router.get("/", async (req, res) => {
   res.json(await api.getAll());
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAuth(), async (req, res) => {
   const item = {
     make: req.body.make,
     model: req.body.model,
@@ -29,17 +31,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const item = await api.getById(id);
-  if (item) {
-    res.json(item);
-  } else {
-    res.status(404).json({ message: `Item ${id} not found` });
-  }
+router.get("/:id", preload(), (req, res) => {
+    res.json(res.locals.item);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", preload(), isOwner(), async (req, res) => {
   const id = req.params.id;
 
   const item = {
@@ -65,7 +61,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAuth(), isOwner(), async (req, res) => {
     const id = req.params.id;
 
     try {
