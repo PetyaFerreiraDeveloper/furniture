@@ -14,14 +14,19 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    try {
-      const result = await api.login(email, password);
-      res.json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(400).json({ message: err.message });
-    }
-  });
+  const { email, password } = req.body;
+  try {
+    const result = await api.login(email, password);
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+});
+
+router.get('/logout', (req, res) => {
+    api.logout(req.user.token);
+    res.status(204).end();
+})
 
 module.exports = router;
